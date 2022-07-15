@@ -16,6 +16,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const tweet_route = require('./routes/tweet.route')
+
+app.use('/tweet', tweet_route)
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
