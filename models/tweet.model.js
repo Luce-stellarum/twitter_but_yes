@@ -30,9 +30,10 @@ const tweet = mongoose.Schema({
     like: {
         
     },
-    // user: {
-
-    // }
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    }
 
 
 

@@ -1,8 +1,23 @@
 const twitter_model  = require('../../models/tweet.model')
+const user_model  = require('../../models/user.model')
+const {unlink} = require('fs')
 
 const create_tweet = async(req, res, next)=>{
     const body = req.body
     try{
+        const usr = await user_model.findById(req.userid)
+        if(!usr){
+            if(req.files){
+                if(req.files.image){
+                    unlink(req.file.image.path)
+                }
+                if(req.files.video){
+                    unlink(req.file.video.path)
+                }
+            }
+            throw Error("no user found")
+        }
+        body['user'] = usr._id
         var image = []
         var video = []
         if(req.files){
@@ -22,8 +37,6 @@ const create_tweet = async(req, res, next)=>{
                 body['video'] = video
             }
         }
-        console.log(body)
-
         const new_tweet = new twitter_model(body)
         await new_tweet.save()
         res.status(200).json({
@@ -32,6 +45,7 @@ const create_tweet = async(req, res, next)=>{
         })
 
     }catch(err){
+        console.log(err)
         if(!err.statue){
             err.status = 400
         }
