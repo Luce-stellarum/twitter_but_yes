@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose').set('debug', true)
 
 const tweet = mongoose.Schema({
     parent_tweet: {
@@ -6,10 +6,10 @@ const tweet = mongoose.Schema({
         ref: 'tweet'
     },
     child_tweet: [
-        twe = {
+        {twe : {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'tweet'
-        }
+        }}
     ],
     description: {
         type: String,

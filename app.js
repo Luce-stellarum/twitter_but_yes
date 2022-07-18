@@ -22,19 +22,24 @@ const user_route = require('./routes/user.route')
 app.use('/tweet', tweet_route)
 app.use('/user', user_route)
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+app.use((req, res)=> {
+  res.status(404).json({Error: "No Such route"})
+})
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
+app.use((err, req, res, next) => {
+  console.log(`${err.status || 500}: ${err.message}`)
+  if (err.code === 'LIMIT_FILE_SIZE') {
+      err.status = 400;
+  }
+  if(err.message.startsWith("E11000")){
+      err.message = "Username/Email already exist"
+  }
+  if(err.message.startsWith("Cast to ObjectId")){
+    err.message = "No such tweet"
+}
   res.status(err.status || 500);
+  res.json({"Error": err.message || 'Internal server error'})
+
 });
 
 module.exports = app;

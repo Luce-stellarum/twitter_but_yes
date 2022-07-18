@@ -2,7 +2,7 @@ const twitter_model  = require('../../models/tweet.model')
 
 const get_tweets = async(req, res, next)=>{
     try{
-        const tweets = await twitter_model.find()
+        const tweets = await twitter_model.find().populate('user', '-password')
         res.status(200).json({
             status: 200,
             msg: 'all tweets',
