@@ -20,7 +20,7 @@ const get_tweets = async(req, res, next)=>{
 const get_tweet = async(req, res, next)=>{
     const _id = req.params.id
     try{
-        const tweet = await twitter_model.findById(_id)
+        const tweet = await twitter_model.findById(_id).populate('parent_tweet')
         res.status(200).json({
             status: 200,
             msg: 'all tweets',
