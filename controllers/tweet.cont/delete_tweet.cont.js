@@ -9,14 +9,18 @@ const delete_tweet = async(req, res, next)=>{
         if(!del_tweet){
             throw Error("no tweet found")
         }
-        if(del_tweet.image.length <= 1){
+        if(del_tweet.image.length >= 1){
             del_tweet.image.forEach((item)=>{
-                unlink(item)
+                unlink("./" + item, (err) => {
+                    if (err) throw err;
+                })
             })
         }
-        if(del_tweet.video.length <= 1){
+        if(del_tweet.video.length >= 1){
             del_tweet.video.forEach((item)=>{
-                unlink(item)
+                unlink("./" + item, (err) => {
+                    if (err) throw err;
+                })
             })
         }
 
